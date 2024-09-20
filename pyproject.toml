@@ -6,7 +6,8 @@ authors = ["Nicholas <nictann96@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "3.11"
+python = "^3.11"
+spotipy = "^2.24.0"
 
 
 [build-system]
