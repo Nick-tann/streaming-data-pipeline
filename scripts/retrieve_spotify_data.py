@@ -1,32 +1,62 @@
-import spotipy
+import json
+import requests
+from utils import utils
+from requests.auth import HTTPBasicAuth
 from dotenv import dotenv_values
-from spotipy.oauth2 import SpotifyClientCredentials
-
-scope = "user-library-read"
 
 #Set up config and credentials
+scope = "user-library-read, user-top-read"
+
+url_file_name = "config/urls.json"
+with open(url_file_name) as f:
+    urls = json.load(f)
+
+# BASE_URL = 'https://api.spotify.com/v1'
+# AUTH_URL = 'https://accounts.spotify.com/authorize'
+# OAUTH_TOKEN_URL = 'https://accounts.spotify.com/api/token'
+
+BASE_URL = urls['BASE_URL']
+AUTH_URL = urls['AUTH_URL']
+OAUTH_TOKEN_URL = urls['OAUTH_TOKEN_URL']
+REDIRECT_URL = urls['REDIRECT_URL']
+
 #Get credentials from env
 client_id = dotenv_values("credentials/spotify-cred.env")['client-id']
 client_secret = dotenv_values("credentials/spotify-cred.env")['client-secret']
+# redirect_url = "http://localhost:8080/callback"
 
-client_cred_manager = SpotifyClientCredentials(
-    client_id=client_id,
-    client_secret=client_secret
-    )
+#Prepare header and payload to get access token
+token_headers = {
+    "Content-Type": "application/x-www-form-urlencoded"
+}
 
-#Initialize spotify client
-sp = spotipy.Spotify(
-    client_credentials_manager=client_cred_manager
+token_payload = {
+    'grant_type': 'client_credentials',
+    'client_id': client_id,
+    'client_secret': client_secret,
+}
+
+#Post request to get Access token
+response = requests.post(
+    url = OAUTH_TOKEN_URL,
+    headers= token_headers,
+    data=token_payload
 )
 
-weeknd_artist_id = "1Xyo4u8uXC1ZmMpatF05PJ"
-artist_uri_prefix = "spotify:artist:"
-full_uri = artist_uri_prefix + weeknd_artist_id
-results = sp.artist_albums(full_uri,album_type="album")
-albums = results['items']
-while results['next']:
-    results = sp.next(results)
-    albums.extend(results['items'])
+token = response.json()['access_token']
 
-for album in albums:
-    print(album['name'])
+#The Weeknd
+artist_id = "1Xyo4u8uXC1ZmMpatF05PJ"
+artist_url = BASE_URL + "/artists/" + artist_id
+
+#Prepare header to get artist
+headers = {
+    "Authorization":f"Bearer {token}"
+}
+
+response = requests.get(
+    url=artist_url,
+    headers=headers
+)
+
+print(json.dumps(response.json()))
