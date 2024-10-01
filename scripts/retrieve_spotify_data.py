@@ -24,26 +24,28 @@ REDIRECT_URL = urls['REDIRECT_URL']
 client_id = dotenv_values("credentials/spotify-cred.env")['client-id']
 client_secret = dotenv_values("credentials/spotify-cred.env")['client-secret']
 
-user_id = "test"
-
+user_id = "nictomeetu"
+playlist_name = "Top 50 - Singapore"
+# playlist_name = "Family playlist"
 # #The Weeknd
 # artist_id = "1Xyo4u8uXC1ZmMpatF05PJ"
 
 #Spotify manager to perform API calls
-spotify_manager = utils.SpotifyManager(client_id,client_secret,urls)
-with spotify_manager as sm:
-    # Get user profile
-    sm.user_profile(user_id)
+playlist_manager = utils.SpotifyPlaylistManager(client_id,client_secret,urls,user_id)
+with playlist_manager as pm:
 
-    # Get user public playlists
-    playlist_list = sm.user_public_playlist(user_id)
-    
-    #Test playlist
-    test_playlist = playlist_list[1]
-    playlist_id = test_playlist['id']
-    playlist_items_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
-    response = requests.get(
-        url = playlist_items_url,
-        headers= sm.headers
-    )
-    print(response.json()['items'][0])
+    playlist_list = pm.get_user_public_playlist()
+    # print(playlist_list[0].keys())
+    print(pm.get_playlist_details(playlist_list, playlist_name))
+    # #Test playlist
+    # test_playlist = playlist_list[1]
+    # playlist_id = test_playlist['id']
+    # playlist_items_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+    # response = requests.get(
+    #     url = playlist_items_url,
+    #     headers= sm.headers
+    # )
+
+    # album_url = response.json()['items'][0]['track']["href"]
+    # track_name = response.json()['items'][0]['track']["name"]
+    # artist_id = response.json()['items'][0]['track']["artists"]

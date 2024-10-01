@@ -18,6 +18,11 @@ def set_logger() -> None:
     root_logger.addHandler(handler)
     return
 
+# Generic function to search through a list of dictionaries and return the dict with corresponding name
+def inner_search(object,name):
+    for obj in object:
+        if obj["name"]==name:
+            return obj
 
 @dataclass
 class SpotifyManager:
@@ -84,11 +89,26 @@ class SpotifyManager:
         logger.info(f"User {user_profile['display_name']} has {user_profile['follower_count']} number of followers.")
         return
 
-    def user_public_playlist(self, user_id:str)->list:
-        playlist_url = f'https://api.spotify.com/v1/users/{user_id}/playlists'
+
+@dataclass
+class SpotifyPlaylistManager(SpotifyManager):
+    user_id:str
+
+    def get_user_public_playlist(self)->list:
+        playlist_url = f'https://api.spotify.com/v1/users/{self.user_id}/playlists'
         response = requests.get(
         url = playlist_url,
         headers= self.headers
         )
-        playlist_json = response.json()["items"]
-        return playlist_json
+        playlist_list = response.json()["items"]
+        return playlist_list
+    
+    def get_playlist_details(self, playlist_list:list, playlist_name:str)->dict:
+        playlist = inner_search(playlist_list, playlist_name)
+        playlist_details = {
+            "id": playlist["id"],
+            'track_count': playlist["tracks"]["total"],
+            "description": playlist["description"] if playlist["description"]!="" else "No description"
+        }
+        logger.info(f"Playlist {playlist_name} has {playlist_details['track_count']} tracks. Description of playlist: {playlist_details['description']}.")
+        return playlist
