@@ -107,8 +107,9 @@ class SpotifyPlaylistManager(SpotifyManager):
         playlist = inner_search(playlist_list, playlist_name)
         playlist_details = {
             "id": playlist["id"],
+            "playlist_tracks_url": playlist["tracks"]['href'],
             'track_count': playlist["tracks"]["total"],
             "description": playlist["description"] if playlist["description"]!="" else "No description"
         }
-        logger.info(f"Playlist {playlist_name} has {playlist_details['track_count']} tracks. Description of playlist: {playlist_details['description']}.")
-        return playlist
+        logger.info(f"Playlist {playlist_name} has {playlist_details['track_count']} tracks. Description of playlist: {playlist_details['description']}")
+        return playlist_details
