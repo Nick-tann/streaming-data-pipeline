@@ -1,6 +1,9 @@
 *.txt
 *.env
 *.ipynb
-test.py
 .cache
 __pycache__
+*.pyc
+config.json
+test.*
+full_data.csv
