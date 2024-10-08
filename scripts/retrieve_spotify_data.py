@@ -99,8 +99,8 @@ def main():
             track_popularity = track['track']['popularity'],
             )
             track_row_list.append(track_row)
-            df = spark.createDataFrame(track_row_list)
-            df.show()
+        df = spark.createDataFrame(track_row_list)
+        # df.show()
 
 if __name__ == "__main__":
     main()

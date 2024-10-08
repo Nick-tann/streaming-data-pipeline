@@ -13,7 +13,8 @@ def set_logger() -> None:
 
     handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(logging.INFO)
-    formatter = logging.Formatter('[%(levelname)s] %(name)s - %(asctime)s : %(message)s',datefmt = "%Y-%m-%dT%H:%M:%S%z")
+    formatter = logging.Formatter('[%(levelname)s] %(name)s - %(asctime)s : %(message)s', \
+                                  datefmt = "%Y-%m-%dT%H:%M:%S%z")
     handler.setFormatter(formatter)
     root_logger.addHandler(handler)
     return
@@ -74,7 +75,22 @@ class SpotifyManager:
         logger.info("Closing Spotify Manager Client.")
         
 
-    def user_profile(self, user_id:str)->dict[str, any]:
+    def user_profile(
+            self, 
+            user_id:str
+            )->dict[str, any]:
+        
+        """
+            Parameters
+            ----------
+            user_id : str
+                id of the spotify user
+
+            Returns
+            -------
+            dict [key: str, value: any]
+        
+        """
         user_url = f'https://api.spotify.com/v1/users/{user_id}'
         response = requests.get(
             url = user_url,
@@ -86,7 +102,8 @@ class SpotifyManager:
             "spotify_url":f"{user_json['external_urls']['spotify']}",
             "follower_count":f"{user_json['followers']['total']}"
         }
-        logger.info(f"User {user_profile['display_name']} has {user_profile['follower_count']} number of followers.")
+        logger.info(f"User {user_profile['display_name']} has \
+                    {user_profile['follower_count']} number of followers.")
         return
 
 
@@ -103,7 +120,11 @@ class SpotifyPlaylistManager(SpotifyManager):
         playlist_list = response.json()["items"]
         return playlist_list
     
-    def get_playlist_details(self, playlist_list:list, playlist_name:str)->dict:
+    def get_playlist_details(
+            self, 
+            playlist_list:list, 
+            playlist_name:str
+            )->dict:
         playlist = inner_search(playlist_list, playlist_name)
         playlist_details = {
             "id": playlist["id"],
@@ -113,3 +134,4 @@ class SpotifyPlaylistManager(SpotifyManager):
         }
         logger.info(f"Playlist {playlist_name} has {playlist_details['track_count']} tracks. Description of playlist: {playlist_details['description']}")
         return playlist_details
+    
