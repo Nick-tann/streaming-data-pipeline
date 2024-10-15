@@ -112,6 +112,13 @@ class SpotifyPlaylistManager(SpotifyManager):
     user_id:str
 
     def get_user_public_playlist(self)->list:
+        """
+            Function to get a user's publicly available playlists
+
+            Returns
+            -------
+            list
+        """
         playlist_url = f'https://api.spotify.com/v1/users/{self.user_id}/playlists'
         response = requests.get(
         url = playlist_url,
@@ -124,7 +131,19 @@ class SpotifyPlaylistManager(SpotifyManager):
             self, 
             playlist_list:list, 
             playlist_name:str
-            )->dict:
+            )->dict[str,any]:
+        """
+            Function to retrieve relevant details about the playlist
+
+            Parameters
+            ----------
+            playlist_list : list
+            playlist_name : str
+
+            Returns
+            -------
+            dict [key: str, value: any]
+        """
         playlist = inner_search(playlist_list, playlist_name)
         playlist_details = {
             "id": playlist["id"],
