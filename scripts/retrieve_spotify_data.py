@@ -1,11 +1,8 @@
 import json
-import base64
 import requests
 import logging
 from utils import utils
-from requests.auth import HTTPBasicAuth
 from dotenv import dotenv_values
-from pyspark.sql import SparkSession, Row
 
 ### Set up config and credentials ###
 logger = logging.getLogger(__name__)

@@ -151,6 +151,7 @@ class SpotifyPlaylistManager(SpotifyManager):
             'track_count': playlist["tracks"]["total"],
             "description": playlist["description"] if playlist["description"]!="" else "No description"
         }
+        logger.info("Retrieving playlist...")
         logger.info(f"Playlist {playlist_name} has {playlist_details['track_count']} tracks. Description of playlist: {playlist_details['description']}")
         return playlist_details
     
