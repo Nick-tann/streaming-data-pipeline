@@ -76,19 +76,19 @@ class SpotifyManager:
         
 
     def user_profile(
-            self, 
-            user_id:str
-            )->dict[str, any]:
+        self, 
+        user_id:str
+    )->dict[str, any]:
         
         """
-            Parameters
-            ----------
-            user_id : str
-                id of the spotify user
+        Parameters
+        ----------
+        user_id : str
+            id of the spotify user
 
-            Returns
-            -------
-            dict [key: str, value: any]
+        Returns
+        -------
+        dict [key: str, value: any]
         
         """
         user_url = f'https://api.spotify.com/v1/users/{user_id}'
@@ -128,21 +128,21 @@ class SpotifyPlaylistManager(SpotifyManager):
         return playlist_list
     
     def get_playlist_details(
-            self, 
-            playlist_list:list, 
-            playlist_name:str
-            )->dict[str,any]:
+        self, 
+        playlist_list:list, 
+        playlist_name:str
+    )->dict[str,any]:
         """
-            Function to retrieve relevant details about the playlist
+        Function to retrieve relevant details about the playlist
 
-            Parameters
-            ----------
-            playlist_list : list
-            playlist_name : str
+        Parameters
+        ----------
+        playlist_list : list
+        playlist_name : str
 
-            Returns
-            -------
-            dict [key: str, value: any]
+        Returns
+        -------
+        dict [key: str, value: any]
         """
         playlist = inner_search(playlist_list, playlist_name)
         playlist_details = {
