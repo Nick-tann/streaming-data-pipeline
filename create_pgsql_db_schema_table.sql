@@ -33,7 +33,7 @@ CREATE TABLE spotify.playlist.albums (
 -- Playlist details table
 DROP TABLE IF EXISTS spotify.playlist.artists;
 CREATE TABLE spotify.playlist.artists (
-    album_id VARCHAR(25),
+    track_id VARCHAR(25),
     artist_id VARCHAR(25),
     name VARCHAR(100)
 );

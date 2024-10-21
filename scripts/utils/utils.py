@@ -84,7 +84,6 @@ class SpotifyManager:
         Parameters
         ----------
         user_id : str
-            id of the spotify user
 
         Returns
         -------
